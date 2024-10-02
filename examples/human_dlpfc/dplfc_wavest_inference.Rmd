@@ -1,0 +1,88 @@
+R version used to run this code: R 4.4.1
+
+
+```{r}
+# # Below code can be used to install required dependencies
+# # Install dependency
+# if (!require("BiocManager", quietly = TRUE))
+#   install.packages("BiocManager")
+# 
+# BiocManager::install("STexampleData")
+# install.packages("devtools")
+
+
+# # Installing waveST
+# library(devtools)
+# install_github("OliverXUZY/waveST")
+```
+
+```{r}
+library(waveST)
+library(fields)
+library(tidyverse)
+theme_set(theme_minimal())
+```
+
+```{r}
+set.seed(100) # For reproducibility
+```
+
+## Load visium data
+
+This data was already standardised in Python to be of 0 mean and unit variance.
+
+```{r}
+## Loading visium data
+std_raws = read.csv('visium.csv')
+
+## Constructing waveST object
+wave = waveST(data = std_raws)
+```
+
+## Infer factors using waveST
+
+```{r}
+K = 7
+```
+
+
+```{r}
+# Uses wavelet transform, manual thresholding with no threshold, SVD factor model
+decomp_0_threshold = decompose(wave, "wave", "SVD", K = K, J=4, thresholdMethod="manual", tau=0)
+decomp_0_threshold_5 = decompose(wave, "wave", "SVD", K = K, J=5, thresholdMethod="manual", tau=0)
+decomp_0_threshold_6 = decompose(wave, "wave", "SVD", K = K, J=6, thresholdMethod="manual", tau=0)
+```
+
+```{r}
+# Uses wavelet transformation, hybrid thresholding, SVD factor model
+decomp_hybrid = decompose(wave, "wave", "SVD", K = K, J=4, thresholdMethod="hybrid")
+decomp_hybrid_5 = decompose(wave, "wave", "SVD", K = K, J=5, thresholdMethod="hybrid")
+decomp_hybrid_6 = decompose(wave, "wave", "SVD", K = K, J=6, thresholdMethod="hybrid")
+```
+
+## Export inferred factors
+
+```{r}
+save_waveST_L <- function(decomp, output_csv, K) {
+  vector_list <- list()
+  
+  for (k in 1:K) {
+    vector_list[[k]] <- InvWaveTrans(decomp@output$f[, k], decomp@input %>% as.matrix()) %>% as.vector()
+  }
+  
+  f_matrix <- do.call(cbind, vector_list)
+  
+  # Export the matrix to a CSV file
+  write.csv(f_matrix, output_csv)
+}
+```
+
+
+```{r}
+save_waveST_L(decomp_0_threshold, "waveST0ThresholdVisium.csv", K)
+save_waveST_L(decomp_0_threshold_5, "waveST0ThresholdVisium5.csv", K)
+save_waveST_L(decomp_0_threshold_6, "waveST0ThresholdVisium6.csv", K)
+save_waveST_L(decomp_hybrid, "waveSTHybridVisium.csv", K)
+save_waveST_L(decomp_hybrid_5, "waveSTHybridVisium5.csv", K)
+save_waveST_L(decomp_hybrid_6, "waveSTHybridVisium6.csv", K)
+```

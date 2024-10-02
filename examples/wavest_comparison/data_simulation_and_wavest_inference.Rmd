@@ -1,0 +1,144 @@
+R version used to run this code: R 4.4.1
+
+
+```{r}
+# # Below code can be used to install required dependencies
+# # Install dependency
+# if (!require("BiocManager", quietly = TRUE))
+#   install.packages("BiocManager")
+# 
+# BiocManager::install("STexampleData")
+# install.packages("devtools")
+
+
+# # Installing waveST
+# library(devtools)
+# install_github("OliverXUZY/waveST")
+```
+
+```{r}
+library(waveST)
+library(fields)
+library(tidyverse)
+theme_set(theme_minimal())
+```
+
+```{r}
+set.seed(100) # For reproducibility
+```
+
+## Data simulation
+
+Retrieved and modified from: https://github.com/OliverXUZY/waveST/blob/master/vignettes/vignette01.Rmd
+
+```{r}
+########## ==================  Data Generation
+NUM_GENES = 300
+K = 9
+
+## == Step 1. generate coordinate matrix image with different patterns
+# @N_dup, generate duplicates of each matrix pattern with a little permutation
+
+CMls = generateCoorM(1)
+```
+
+
+We show all the generated pattern (the colours may differ from the one from the waveST paper):
+```{r, fig.width= 8, fig.height=8, result = "hide"}
+# show in scaled version
+lay = layout(matrix(1:9, 3, 3, byrow = TRUE))
+CMls %>%
+  map(~ .x / sqrt(sum(.x^2))) %>%
+  map(~ image.plot(.x, asp = 1))
+layout(1)
+```
+
+We treat previous 9 patterns as factor genes, i.e. we have 8 factors matrix F = D^2xK (1024x8), where 1024 comes from (D^2) 32^2. We consider p = 500 genes in this simulation generate nxp(1024x500) data matrix by F%*%V, where V is \code{K}xp (8x500), compute the magnitude of each image matrix
+
+```{r}
+scales = CMls %>%
+  map_dbl(~ sqrt(sum(.x^2)))
+## rescale each image matrix to norm 1 (eigen gene has norm 1)
+FctGenes = CMls %>%
+  map(~ .x / sqrt(sum(.x^2))) %>%
+  map_dfc(~ as.vector(.)) %>%
+  as.matrix()
+
+LoadGenes = rep(1000, 9) %>%
+  map_dfc(~ .x * rnorm(NUM_GENES)) %>%
+  as.matrix(.) %>%
+  t(.)
+
+truth = FctGenes %*% LoadGenes
+
+## we generate data by add random noise
+raws = truth + matrix(rnorm(prod(dim(truth)), mean = 0, sd = 190), nrow = dim(truth)[1], ncol = dim(truth)[2])
+
+## we standardised data to 0 mean and 1 standard deviation (for consistency with the WaviFM prepreocessing)
+std_raws = scale(raws, center=TRUE, scale=TRUE)
+
+## construct waveST object
+wave = waveST(data = std_raws)
+```
+
+## Exporting data
+
+```{r}
+write.csv(std_raws, 'std_raws.csv')
+```
+
+```{r}
+vector_list <- list()
+
+for (k in 1:K) {
+  vector_list[[k]] <- CMls[[k]] %>% as.matrix() %>% as.vector()
+}
+
+true_factors <- do.call(cbind, vector_list)
+write.csv(true_factors, "true_factors.csv")
+```
+
+## Perform waveST
+
+Retrieved and modified from: https://github.com/OliverXUZY/waveST/blob/master/vignettes/vignette01.Rmd
+
+
+```{r}
+# Uses wavelet transform, manual thresholding with various threshold levels, SVD factor model
+decomp_0_threshold = decompose(wave, "wave", "SVD", K = K, J=3, thresholdMethod="manual", tau=0)
+decomp_0_threshold_5 = decompose(wave, "wave", "SVD", K = K, J=5, thresholdMethod="manual", tau=0)
+```
+
+
+```{r}
+# Uses wavelet transformation, hybrid thresholding, SVD factor model
+decomp_hybrid = decompose(wave, "wave", "SVD", K = K, J=3, thresholdMethod="hybrid")
+decomp_hybrid_5 = decompose(wave, "wave", "SVD", K = K, J=5, thresholdMethod="hybrid")
+```
+
+## Export inferred factor activites
+
+```{r}
+save_waveST_L <- function(decomp, output_csv, K) {
+  vector_list <- list()
+  
+  for (k in 1:K) {
+    vector_list[[k]] <- InvWaveTrans(decomp@output$f[, k], decomp@input %>% as.matrix()) %>% as.vector()
+  }
+  
+  f_matrix <- do.call(cbind, vector_list)
+  
+  # Export the matrix to a CSV file
+  write.csv(f_matrix, output_csv)
+}
+```
+
+
+```{r}
+save_waveST_L(decomp_0_threshold, "waveST0Threshold.csv", K)
+save_waveST_L(decomp_0_threshold_5, "waveST0Threshold5.csv", K)
+save_waveST_L(decomp_hybrid, "waveSTHybrid.csv", K)
+save_waveST_L(decomp_hybrid_5, "waveSTHybrid5.csv", K)
+```
+
+
