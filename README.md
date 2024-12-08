@@ -33,6 +33,7 @@ Environmental setup
     - devtools
     - OliverXUZY/waveST (on Github)
   - Above packages can be installed by running the following code in R
+- G++ 13.2.0 (Rev6, Built by MSYS2 project)
 
 ```
 # Install dependency
