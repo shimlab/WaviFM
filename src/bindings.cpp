@@ -11,7 +11,6 @@ PYBIND11_MODULE(WaviFM, m)
         .def_readonly("n_features", &CaviDimensions::n_features)
         .def_readonly("n_spots", &CaviDimensions::n_spots)
         .def_readonly("p_pi_shape", &CaviDimensions::p_pi_shape)
-        .def_readonly("p_eta_shape", &CaviDimensions::p_eta_shape)
         .def_readonly("ab_t_shape", &CaviDimensions::ab_t_shape)
         .def_readonly("ab_tau_shape", &CaviDimensions::ab_tau_shape)
         .def_readonly("F_shape", &CaviDimensions::F_shape)
@@ -19,7 +18,7 @@ PYBIND11_MODULE(WaviFM, m)
         .def_readonly("Y_skeleton", &CaviDimensions::Y_skeleton);
 
     py::class_<Parameters>(m, "Parameters")
-        .def(py::init<int, int, int, const Tensor4D &, const Tensor1D &, const Tensor1D &, const Tensor2D &,
+        .def(py::init<int, int, int, const Tensor4D &, const Tensor1D &, const Tensor2D &, const Tensor2D &,
                       const Tensor2D &, const Tensor2D &, const Tensor2D &, const Tensor4D &,
                       const Tensor4D &, const Tensor4D &, const Tensor2D &, const Tensor2D &,
                       const Tensor2D &, const Tensor2D &, const Tensor2D &, const Tensor2D &,
