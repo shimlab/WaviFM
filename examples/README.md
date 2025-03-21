@@ -1,0 +1,1 @@
+These examples are based on the old more restrictive prior code version of WaviFM. They are not guaranteed to work with the current version of WaviFM.
