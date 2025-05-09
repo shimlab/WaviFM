@@ -34,9 +34,9 @@ inline double compute_E_log_likelihood_pi_ijk_l(int i, int j, int k, int l, cons
 inline double compute_E_log_likelihood_eta_i_j(int i, int j, const Parameters &parameters)
 {
     double r_eta_i_j = std::exp(parameters.log_r_eta[i][j]);
-    double log_p_eta_i = parameters.log_p_eta[i];
-    double p_eta_i = std::exp(log_p_eta_i);
-    return r_eta_i_j * log_p_eta_i + (1 - r_eta_i_j) * std::log(1 - p_eta_i);
+    double log_p_eta_i_j = parameters.log_p_eta[i][j];
+    double p_eta_i_j = std::exp(log_p_eta_i_j);
+    return r_eta_i_j * log_p_eta_i_j + (1 - r_eta_i_j) * std::log(1 - p_eta_i_j);
 }
 
 inline double compute_E_log_likelihood_t_i_l(int i, int l, const Parameters &parameters)

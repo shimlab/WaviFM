@@ -47,7 +47,6 @@ def run_wavifm(result_rna, n_length_scales, n_factors, n_x_indices, n_y_indices,
     L_shape = get_L_shape(n_spots, n_resolutions, n_factors)
     Y_shape = get_Y_shape(n_spots, n_resolutions, n_features)
     p_pi_shape = (n_resolutions,)
-    p_eta_shape = (n_factors,)
     ab_t_shape = (n_resolutions, n_factors)
     ab_tau_shape = (n_resolutions, n_features)
     F_shape = (n_factors, n_features)
@@ -60,7 +59,6 @@ def run_wavifm(result_rna, n_length_scales, n_factors, n_x_indices, n_y_indices,
         "L_shape" : L_shape,
         "Y_shape" : Y_shape,
         "p_pi_shape" : p_pi_shape,
-        "p_eta_shape" : p_eta_shape,
         "ab_t_shape" : ab_t_shape,
         "ab_tau_shape" : ab_tau_shape,
         "F_shape" : F_shape

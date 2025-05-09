@@ -4,7 +4,7 @@
 Parameters::Parameters(int n_resolutions_init, int n_factors_init, int n_features_init,
                        const Tensor4D &Y_init,
                        const Tensor1D &log_p_pi_init,
-                       const Tensor1D &log_p_eta_init,
+                       const Tensor2D &log_p_eta_init,
                        const Tensor2D &alpha_t_init,
                        const Tensor2D &beta_t_init,
                        const Tensor2D &alpha_tau_init,

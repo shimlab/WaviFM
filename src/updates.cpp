@@ -77,12 +77,12 @@ double compute_update_mu_F(int i, int j, double update_sigma_squared_F_i_j, cons
 
 double compute_update_eta_i_j_log_relative_pmf(int i, int j, int eta, double update_sigma_squared_F_i_j, double update_mu_F_i_j, const Parameters &parameters)
 {
-    double log_p_eta_i = parameters.log_p_eta[i];
-    double p_eta_i = exp(log_p_eta_i);
+    double log_p_eta_i_j = parameters.log_p_eta[i][j];
+    double p_eta_i_j = exp(log_p_eta_i_j);
 
     double log_scaling_factor = 0;
     double log_exp_factor = 0;
-    double log_bernoulli_factor = (eta == 1) ? log_p_eta_i : log(1 - p_eta_i);
+    double log_bernoulli_factor = (eta == 1) ? log_p_eta_i_j : log(1 - p_eta_i_j);
     if (eta == 1)
     {
         log_scaling_factor = 0.5 * (log(2) + log(M_PI) + log(update_sigma_squared_F_i_j));

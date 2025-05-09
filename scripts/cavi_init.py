@@ -18,7 +18,6 @@ def init_parameters(Y, dimensions, priors=None):
     n_factors = dimensions["n_factors"]
     n_features = dimensions["n_features"]
     p_pi_shape = dimensions["p_pi_shape"]
-    p_eta_shape = dimensions["p_eta_shape"]
     F_shape = dimensions["F_shape"]
     ab_t_shape = dimensions["ab_t_shape"]
     ab_tau_shape = dimensions["ab_tau_shape"]
@@ -38,7 +37,7 @@ def init_parameters(Y, dimensions, priors=None):
     
     # Set priors
     default_log_p_pi = np.log(np.full(p_pi_shape, 0.5).astype(np.float64))
-    default_log_p_eta = np.log(np.full(p_eta_shape, 0.5).astype(np.float64))
+    default_log_p_eta = np.log(np.full(F_shape, 0.5).astype(np.float64))
     default_alpha_t = np.full(ab_t_shape, 1).astype(np.float64)
     default_beta_t = np.full(ab_t_shape, 1).astype(np.float64)
     default_alpha_tau = np.full(ab_tau_shape, 1).astype(np.float64)
