@@ -15,7 +15,7 @@ from .cavi_utilities import *
 import build.WaviFM as WaviFM
 import time
 import copy
-
+from multiprocessing import Pool
 
 # Function to run the inference (pretty bad cos not very procedural as rely on a lot of global params, ceebs tbh just testing here anyways)
 def cavi(parameters, max_iterations, relative_elbo_threshold, print_progress=True):
@@ -150,6 +150,55 @@ def cavi_multi_init(
     results_with_max_elbo = max(results_list, key=lambda results: results["elbo"])
     return results_with_max_elbo
 
+def attribute_indexer_to_dict(indexer):
+    """
+    Recursively converts an AttributeIndexer object or a Pybind11-bound object 
+    into a pure Python dictionary.
+
+    This function is useful when the underlying object does not expose a __dict__ 
+    attribute (e.g., C++ objects bound via Pybind11), but its public attributes 
+    can still be accessed using dir() and getattr().
+
+    Parameters
+    ----------
+    indexer : AttributeIndexer or object
+        An instance of AttributeIndexer or a Pybind11-bound C++ object. If an 
+        AttributeIndexer is passed, the function will extract from its internal `_obj`.
+
+    Returns
+    -------
+    dict
+        A dictionary representation of the object's accessible public attributes.
+        If any attributes are nested AttributeIndexer instances, lists, or dicts, 
+        they will be recursively converted as well.
+
+    Notes
+    -----
+    - Private and special attributes (those starting with `_`) are ignored.
+    - If an attribute is not readable (raises AttributeError), it is silently skipped.
+    - This function supports nested structures of AttributeIndexers, lists, and dicts.
+    """
+    def unwrap(obj):
+        if isinstance(obj, AttributeIndexer):
+            return attribute_indexer_to_dict(obj)
+        elif isinstance(obj, list):
+            return [unwrap(item) for item in obj]
+        elif isinstance(obj, dict):
+            return {k: unwrap(v) for k, v in obj.items()}
+        else:
+            return obj
+
+    obj = indexer._obj if isinstance(indexer, AttributeIndexer) else indexer
+    attr_names = [attr for attr in dir(obj) if not attr.startswith("_")]
+
+    result = {}
+    for attr in attr_names:
+        try:
+            value = getattr(obj, attr)
+            result[attr] = unwrap(value)
+        except AttributeError:
+            continue  # skip if not accessible
+    return result
 
 # Function to run CAVI for multiple initialisations and choose result of the one with the best elbo
 def cavi_multi_init_cpp(
@@ -194,3 +243,51 @@ def cavi_multi_init_cpp(
     if print_progress:
         print(f"Initialisation {index+1} has maximal ELBO and is returned")
     return results_with_max_elbo
+
+# Functions to enable running CAVI for multiple initialisations in parallel to utilise multiprocessing, and choose result of the one with the best elbo
+# Carefully designed to ensure iterations acknowledge random seed (either set explicitly or implicitly prior to running function) in the same manner as cavi_multi_init_cpp
+def _run_cavi_from_python_params(parameters, max_iterations, relative_elbo_threshold):
+    parameters_cpp = build_parameters_cpp(parameters)
+    start = time.time()
+    results_cpp = WaviFM.cavi(parameters_cpp, max_iterations, relative_elbo_threshold)
+    end = time.time()
+    cpp_time = end - start
+
+    return {
+        "parameters": attribute_indexer_to_dict(AttributeIndexer(results_cpp.parameters)), # Note this return differs from return of cavi_multi_init_cpp as here return a dictionary, albeit for analysis purpose very similar
+        "elbo_record": results_cpp.elbo_record,
+        "elbo": results_cpp.elbo,
+        "cpp_time": cpp_time,
+    }
+
+def cavi_multi_init_cpp_parallel(
+    Y,
+    dimensions,
+    max_iterations,
+    relative_elbo_threshold,
+    n_init=5,
+    print_progress=True,
+    priors=None,
+):
+    # Initialise all random parameter sets in main process to keep numpy seed behaviour consistent
+    parameters_list = [init_parameters(Y, dimensions, priors) for _ in range(n_init)]
+
+    # Run CAVI in parallel
+    args_list = [(params, max_iterations, relative_elbo_threshold) for params in parameters_list]
+    with Pool() as pool:
+        results_list = pool.starmap(_run_cavi_from_python_params, args_list)
+
+    # Print results
+    if print_progress:
+        for i, result in enumerate(results_list):
+            n_iter = len(result["elbo_record"]) - 1
+            print(
+                f"Initialisation {i+1}:\n\tELBO = {result['elbo']}\n\t#Iterations = {n_iter}\n\tTime taken (s) = {result['cpp_time']:.2f}"
+            )
+
+    # Select best result
+    index, best_result = max(enumerate(results_list), key=lambda x: x[1]["elbo"])
+    if print_progress:
+        print(f"Initialisation {index+1} has maximal ELBO and is returned")
+
+    return best_result  # Note this return differs from return of cavi_multi_init_cpp as here return a dictionary for the result["parameters"], albeit for analysis purpose very similar
