@@ -106,13 +106,8 @@ def init_parameters(Y, dimensions, priors=None):
 
     return parameters
 
-
-def init_parameters_cpp(Y, dimensions, priors):
-
-    parameters = init_parameters(Y, dimensions, priors)
-
-    # Get parameters input in the form accepted by the C++ cavi code
-    parameters_cpp = WaviFM.Parameters(
+def build_parameters_cpp(parameters):
+    return WaviFM.Parameters(
         parameters["n_resolutions"],
         parameters["n_factors"],
         parameters["n_features"],
@@ -135,4 +130,9 @@ def init_parameters_cpp(Y, dimensions, priors):
         parameters["beta_hat_tau"].tolist(),
     )
 
-    return parameters_cpp
+def init_parameters_cpp(Y, dimensions, priors):
+
+    parameters = init_parameters(Y, dimensions, priors)
+
+    # Get parameters input in the form accepted by the C++ cavi code
+    return build_parameters_cpp(parameters)

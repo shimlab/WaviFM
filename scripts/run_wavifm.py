@@ -5,7 +5,7 @@ import pandas as pd
 import numpy as np
 
 def run_wavifm(result_rna, n_length_scales, n_factors, n_x_indices, n_y_indices,
-               max_iterations, relative_elbo_threshold, n_init, priors=None):
+               max_iterations, relative_elbo_threshold, n_init, priors=None, multiprocessing=True):
     
     ## Extracting Feature Matrices
     feats = np.vstack(result_rna['feature'].to_numpy())
@@ -69,7 +69,8 @@ def run_wavifm(result_rna, n_length_scales, n_factors, n_x_indices, n_y_indices,
     assert is_power_of_4(n_spots)
     
     # Run CAVI
-    results = cavi_multi_init_cpp(
+    cavi_method = cavi_multi_init_cpp_parallel if multiprocessing else cavi_multi_init_cpp
+    results = cavi_method(
         true_Y,
         dimensions,
         max_iterations=max_iterations,
@@ -77,4 +78,5 @@ def run_wavifm(result_rna, n_length_scales, n_factors, n_x_indices, n_y_indices,
         n_init=n_init,
         priors=priors
     )
+
     return results
