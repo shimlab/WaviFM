@@ -37,6 +37,7 @@ namespace mocks
 
     // Mock Parameters instance
     extern Parameters parameters;
+    extern Parameters parameters2;
 
     // Mock return values for functions in utilities
     extern const double gamma_t_i_l;

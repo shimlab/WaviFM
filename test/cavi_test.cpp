@@ -51,7 +51,7 @@ TEST(CaviTest, CaviDimensionsTest)
 TEST(CaviTest, Cavi)
 {
     // Obtain cavi fit values
-    CaviResult res = cavi(mocks::parameters, 1000, 0.0001);
+    CaviResult res = cavi(mocks::parameters2, 1000, 0.0001);
 
     // True cavi fit values
     double true_elbo = -83.41810231179173;
