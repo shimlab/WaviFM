@@ -1,5 +1,4 @@
 # /data # Include data for reproducibility
-/lib
 /.vscode
 /.temp
 *.exe
