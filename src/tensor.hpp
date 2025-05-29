@@ -7,5 +7,7 @@ using Tensor1D = std::vector<double>;
 using Tensor2D = std::vector<Tensor1D>;
 using Tensor3D = std::vector<Tensor2D>;
 using Tensor4D = std::vector<Tensor3D>;
+using Tensor1DBool = std::vector<bool>;
+using Tensor2DBool = std::vector<Tensor1DBool>;
 
 #endif /*TENSOR_HPP_INCLUDED*/

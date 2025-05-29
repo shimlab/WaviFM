@@ -66,6 +66,10 @@ TEST(CaviTest, Cavi)
         {-0.69314718, -0.69314718},                                     // log_p_pi
         {{-0.69314718, -0.69314718, -0.69314718},                       // log_p_eta
          {-0.69314718, -0.69314718, -0.69314718}},
+        {{false, false, false},                       // is_p_eta_zero
+         {false, false, false}},
+        {{false, false, false},                       // is_p_eta_one
+         {false, false, false}},
         {{1, 1}, {1, 1}},                                               // alpha_t
         {{1, 1}, {1, 1}},                                               // beta_t
         {{1, 1, 1}, {1, 1, 1}},                                         // alpha_tau

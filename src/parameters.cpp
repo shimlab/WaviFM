@@ -5,6 +5,8 @@ Parameters::Parameters(int n_resolutions_init, int n_factors_init, int n_feature
                        const Tensor4D &Y_init,
                        const Tensor1D &log_p_pi_init,
                        const Tensor2D &log_p_eta_init,
+                       const Tensor2DBool &is_p_eta_zero_init,
+                       const Tensor2DBool &is_p_eta_one_init,
                        const Tensor2D &alpha_t_init,
                        const Tensor2D &beta_t_init,
                        const Tensor2D &alpha_tau_init,
@@ -21,6 +23,7 @@ Parameters::Parameters(int n_resolutions_init, int n_factors_init, int n_feature
                        const Tensor2D &beta_hat_tau_init)
     : n_resolutions(n_resolutions_init), n_factors(n_factors_init), n_features(n_features_init),
       Y(Y_init), log_p_pi(log_p_pi_init), log_p_eta(log_p_eta_init),
+      is_p_eta_zero(is_p_eta_zero_init), is_p_eta_one(is_p_eta_one_init),
       alpha_t(alpha_t_init), beta_t(beta_t_init),
       alpha_tau(alpha_tau_init), beta_tau(beta_tau_init),
       mu_L(mu_L_init), sigma_squared_L(sigma_squared_L_init), log_r_pi(log_r_pi_init),
@@ -39,6 +42,8 @@ Parameters::Parameters(const Parameters &other)
       Y(other.Y),
       log_p_pi(other.log_p_pi),
       log_p_eta(other.log_p_eta),
+      is_p_eta_zero(other.is_p_eta_zero),
+      is_p_eta_one(other.is_p_eta_one),
       alpha_t(other.alpha_t),
       beta_t(other.beta_t),
       alpha_tau(other.alpha_tau),
@@ -66,6 +71,8 @@ Parameters &Parameters::operator=(const Parameters &other)
     Y = other.Y;
     log_p_pi = other.log_p_pi;
     log_p_eta = other.log_p_eta;
+    is_p_eta_zero = other.is_p_eta_zero;
+    is_p_eta_one = other.is_p_eta_one;
     alpha_t = other.alpha_t;
     beta_t = other.beta_t;
     alpha_tau = other.alpha_tau;

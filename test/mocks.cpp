@@ -31,6 +31,12 @@ namespace mocks
     Tensor2D log_p_eta = {{log_half, log_half, log_half},
                           {log_half, log_half, log_half}};
 
+    Tensor2DBool is_p_eta_zero = {{false, false, false},
+                                  {false, false, false}};
+
+    Tensor2DBool is_p_eta_one = {{false, false, false},
+                                 {false, false, false}};
+
     Tensor2D alpha_t = {{1, 1},
                         {1, 1}};
 
@@ -98,6 +104,8 @@ namespace mocks
                           Y,
                           log_p_pi,
                           log_p_eta,
+                          is_p_eta_zero,
+                          is_p_eta_one,
                           alpha_t,
                           beta_t,
                           alpha_tau,
@@ -117,6 +125,8 @@ namespace mocks
                           Y,
                           log_p_pi,
                           log_p_eta,
+                          is_p_eta_zero,
+                          is_p_eta_one,
                           alpha_t,
                           beta_t,
                           alpha_tau,

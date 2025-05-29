@@ -12,6 +12,8 @@ public:
     Tensor4D Y;
     Tensor1D log_p_pi;
     Tensor2D log_p_eta;
+    Tensor2DBool is_p_eta_zero;
+    Tensor2DBool is_p_eta_one;
     Tensor2D alpha_t;
     Tensor2D beta_t;
     Tensor2D alpha_tau;
@@ -32,6 +34,8 @@ public:
                const Tensor4D &Y_init,
                const Tensor1D &log_p_pi_init,
                const Tensor2D &log_p_eta_init,
+               const Tensor2DBool &is_p_eta_zero_init,
+               const Tensor2DBool &is_p_eta_one_init,
                const Tensor2D &alpha_t_init,
                const Tensor2D &beta_t_init,
                const Tensor2D &alpha_tau_init,

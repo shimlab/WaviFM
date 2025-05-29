@@ -18,7 +18,8 @@ PYBIND11_MODULE(WaviFM, m)
         .def_readonly("Y_skeleton", &CaviDimensions::Y_skeleton);
 
     py::class_<Parameters>(m, "Parameters")
-        .def(py::init<int, int, int, const Tensor4D &, const Tensor1D &, const Tensor2D &, const Tensor2D &,
+        .def(py::init<int, int, int, const Tensor4D &, const Tensor1D &, const Tensor2D &,
+                      const Tensor2DBool &, const Tensor2DBool &, const Tensor2D &,
                       const Tensor2D &, const Tensor2D &, const Tensor2D &, const Tensor4D &,
                       const Tensor4D &, const Tensor4D &, const Tensor2D &, const Tensor2D &,
                       const Tensor2D &, const Tensor2D &, const Tensor2D &, const Tensor2D &,
@@ -29,6 +30,8 @@ PYBIND11_MODULE(WaviFM, m)
         .def_readwrite("Y", &Parameters::Y)
         .def_readwrite("log_p_pi", &Parameters::log_p_pi)
         .def_readwrite("log_p_eta", &Parameters::log_p_eta)
+        .def_readwrite("is_p_eta_zero", &Parameters::is_p_eta_zero)
+        .def_readwrite("is_p_eta_one", &Parameters::is_p_eta_one)
         .def_readwrite("alpha_t", &Parameters::alpha_t)
         .def_readwrite("beta_t", &Parameters::beta_t)
         .def_readwrite("alpha_tau", &Parameters::alpha_tau)

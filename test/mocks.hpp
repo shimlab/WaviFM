@@ -20,6 +20,8 @@ namespace mocks
     extern Tensor4D Y;
     extern Tensor1D log_p_pi;
     extern Tensor2D log_p_eta;
+    extern Tensor2DBool is_p_eta_zero;
+    extern Tensor2DBool is_p_eta_one;
     extern Tensor2D alpha_t;
     extern Tensor2D beta_t;
     extern Tensor2D alpha_tau;
