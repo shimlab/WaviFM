@@ -14,6 +14,34 @@ double sum_log(double log_a, double log_b)
     }
 }
 
+double r_eta(int i, int j, const Parameters &parameters)
+{
+    // Computes r_eta_i_j = exp(log_r_eta_i_j) or returns 0 or 1 based on is_p_eta_zero and is_p_eta_one
+    if (parameters.is_p_eta_zero[i][j])
+    {
+        return 0.0;
+    } else if (parameters.is_p_eta_one[i][j])
+    {
+        return 1.0;
+    } else {
+        return std::exp(parameters.log_r_eta[i][j]);
+    }
+}
+
+double p_eta(int i, int j, const Parameters &parameters)
+{
+    // Computes p_eta_i_j = exp(log_p_eta_i_j) or returns 0 or 1 based on is_p_eta_zero and is_p_eta_one
+    if (parameters.is_p_eta_zero[i][j])
+    {
+        return 0.0;
+    } else if (parameters.is_p_eta_one[i][j])
+    {
+        return 1.0;
+    } else {
+        return std::exp(parameters.log_p_eta[i][j]);
+    }
+}
+
 // Utility functions
 double gamma_t(int i, int l, const Parameters &parameters)
 {
@@ -38,7 +66,7 @@ double xi_L(int i, int j, int k, int l, const Parameters &parameters)
 
 double xi_F(int i, int j, const Parameters &parameters)
 {
-    double r_eta_i_j = std::exp(parameters.log_r_eta[i][j]);
+    double r_eta_i_j = r_eta(i, j, parameters);
     double mu_F_i_j = parameters.mu_F[i][j];
     return r_eta_i_j * mu_F_i_j;
 }
@@ -53,7 +81,7 @@ double lambda_L(int i, int j, int k, int l, const Parameters &parameters)
 
 double lambda_F(int i, int j, const Parameters &parameters)
 {
-    double r_eta_i_j = std::exp(parameters.log_r_eta[i][j]);
+    double r_eta_i_j = r_eta(i, j, parameters);
     double mu_F_i_j = parameters.mu_F[i][j];
     double sigma_squared_F_i_j = parameters.sigma_squared_F[i][j];
     return r_eta_i_j * (sigma_squared_F_i_j + mu_F_i_j * mu_F_i_j);

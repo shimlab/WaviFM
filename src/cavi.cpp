@@ -123,6 +123,16 @@ CaviResult cavi(Parameters &parameters, int max_iterations, double relative_elbo
         // Run one iteration of CAVI updates
         Parameters new_parameters = parameters; // Copy construction
 
+        // Note: we handle the extreme case of p_eta_i_j being zero or one separately in the update loop and everywhere in the code where p_eta_i_j and the related update value of r_eta_i_j are involved
+        // From update derivations, when p_eta_i_j is zero or one, the update value of r_eta_i_j is precisely zero or one, respectively
+        // Theoretically, would be easy to just set r_eta_i_j always as 0 or 1 then in those situations.
+        // However, for various numerical stability concerns and other reasons, we store r_eta_i_j as a log relative probability, so we need to handle the case of p_eta_i_j being zero separately (though value as 1 is fine)
+        // Also, being extreme cases, arguably to avoid possible floating point precision issues, we should treat values 0 and 1 as special cases
+        // So, to indicate whether p_eta_i_j and in turn r_eta_i_j are zero or one, we use the is_p_eta_zero[i][j] and is_p_eta_one[i][j] boolean tensors, respectively
+        // In light of these considerations, the approach taken is to NOT update nor store r_eta_i_j. In cases where its value is used, we write relevant code to treat r_eta_i_j as if it is zero or one corresponding to where p_eta_i_j is zero or one.
+        // Similar thing applies to p_eta_i_j; though stored as log_p_eta_i_j, in the case where p_eta_i_j is zero or one, we do not use the value of log_p_eta_i_j, but rather use the indicator is_p_eta_zero[i][j] or is_p_eta_one[i][j] to determine the value of p_eta_i_j.
+        // This separate treatment of such extreme edge case is necessary due to  below, so we do not need to check for it here.
+
         // For L_ijk_l, pi_ijk_l related updates
         for (int l = 0; l < n_factors; ++l)
         {
@@ -146,10 +156,17 @@ CaviResult cavi(Parameters &parameters, int max_iterations, double relative_elbo
         {
             for (int j = 0; j < n_features; ++j)
             {
-                UpdateFEtaResult F_eta_ij_update = compute_update_F_eta(i, j, new_parameters);
-                new_parameters.sigma_squared_F[i][j] = F_eta_ij_update.sigma_squared_F;
-                new_parameters.mu_F[i][j] = F_eta_ij_update.mu_F;
-                new_parameters.log_r_eta[i][j] = F_eta_ij_update.log_r_eta;
+                // Update r_eta if and only if p_eta_i_j is non-zero and non-one
+                if (parameters.is_p_eta_zero[i][j] || parameters.is_p_eta_one[i][j]) {
+                    UpdateFEtaExcludeEtaResult F_eta_ij_update = compute_update_F_eta_exclude_eta(i, j, new_parameters);
+                    new_parameters.sigma_squared_F[i][j] = F_eta_ij_update.sigma_squared_F;
+                    new_parameters.mu_F[i][j] = F_eta_ij_update.mu_F;
+                } else {
+                    UpdateFEtaResult F_eta_ij_update = compute_update_F_eta(i, j, new_parameters);
+                    new_parameters.sigma_squared_F[i][j] = F_eta_ij_update.sigma_squared_F;
+                    new_parameters.mu_F[i][j] = F_eta_ij_update.mu_F;
+                    new_parameters.log_r_eta[i][j] = F_eta_ij_update.log_r_eta;
+                }
             }
         }
 

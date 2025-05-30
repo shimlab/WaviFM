@@ -18,7 +18,7 @@ inline double compute_E_log_likelihood_L_ijk_l_given_pi_t(int i, int j, int k, i
 
 inline double compute_E_log_likelihood_F_i_j_given_eta(int i, int j, const Parameters &parameters)
 {
-    double r_eta_i_j = std::exp(parameters.log_r_eta[i][j]);
+    double r_eta_i_j = r_eta(i, j, parameters);
     double lambda_F_i_j = lambda_F(i, j, parameters);
     return -0.5 * (r_eta_i_j * std::log(2 * M_PI) + lambda_F_i_j);
 }
@@ -33,10 +33,19 @@ inline double compute_E_log_likelihood_pi_ijk_l(int i, int j, int k, int l, cons
 
 inline double compute_E_log_likelihood_eta_i_j(int i, int j, const Parameters &parameters)
 {
-    double r_eta_i_j = std::exp(parameters.log_r_eta[i][j]);
-    double log_p_eta_i_j = parameters.log_p_eta[i][j];
-    double p_eta_i_j = std::exp(log_p_eta_i_j);
-    return r_eta_i_j * log_p_eta_i_j + (1 - r_eta_i_j) * std::log(1 - p_eta_i_j);
+    if (parameters.is_p_eta_zero[i][j])
+    {
+        return 0.0; // If p_eta is zero, the log likelihood is zero
+    }
+    else if (parameters.is_p_eta_one[i][j])
+    {
+        return 0.0; // If p_eta is one, the log likelihood is zero
+    } else {
+        double r_eta_i_j = r_eta(i, j, parameters);
+        double log_p_eta_i_j = parameters.log_p_eta[i][j];
+        double p_eta_i_j = p_eta(i, j, parameters);
+        return r_eta_i_j * log_p_eta_i_j + (1 - r_eta_i_j) * std::log(1 - p_eta_i_j);
+    }
 }
 
 inline double compute_E_log_likelihood_t_i_l(int i, int l, const Parameters &parameters)
@@ -71,10 +80,19 @@ inline double compute_E_negative_variational_log_likelihood_L_ijk_l_pi_ijk_l(int
 
 inline double compute_E_negative_variational_log_likelihood_F_i_j_eta_i_j(int i, int j, const Parameters &parameters)
 {
-    double r_eta_i_j = std::exp(parameters.log_r_eta[i][j]);
-    double sigma_squared_F_i_j = parameters.sigma_squared_F[i][j];
-    return (r_eta_i_j / 2) * std::log(2 * M_PI * sigma_squared_F_i_j + 1) - r_eta_i_j * std::log(r_eta_i_j) -
-           (1 - r_eta_i_j) * std::log(1 - r_eta_i_j);
+    if (parameters.is_p_eta_zero[i][j])
+    {
+        return 0.0; // If p_eta is zero, the log likelihood is zero
+    }
+    else if (parameters.is_p_eta_one[i][j])
+    {
+        return 0.0; // If p_eta is one, the log likelihood is zero
+    } else {
+        double r_eta_i_j = r_eta(i, j, parameters);
+        double sigma_squared_F_i_j = parameters.sigma_squared_F[i][j];
+        return (r_eta_i_j / 2) * std::log(2 * M_PI * sigma_squared_F_i_j + 1) - r_eta_i_j * std::log(r_eta_i_j) -
+            (1 - r_eta_i_j) * std::log(1 - r_eta_i_j);
+    }
 }
 
 inline double compute_E_negative_variational_log_likelihood_t_i_l(int i, int l, const Parameters &parameters)

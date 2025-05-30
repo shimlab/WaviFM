@@ -22,6 +22,10 @@ namespace mocks
     extern Tensor2D log_p_eta;
     extern Tensor2DBool is_p_eta_zero;
     extern Tensor2DBool is_p_eta_one;
+    extern Tensor2DBool is_p_eta_zero_with_zero_p_eta_values;
+    extern Tensor2DBool is_p_eta_one_with_zero_p_eta_values;
+    extern Tensor2DBool is_p_eta_zero_with_one_p_eta_values;
+    extern Tensor2DBool is_p_eta_one_with_one_p_eta_values;
     extern Tensor2D alpha_t;
     extern Tensor2D beta_t;
     extern Tensor2D alpha_tau;
@@ -40,6 +44,10 @@ namespace mocks
     // Mock Parameters instance
     extern Parameters parameters;
     extern Parameters parameters2;
+    extern Parameters parameters_with_zero_p_eta_values;
+    extern Parameters parameters_with_zero_p_eta_values2;
+    extern Parameters parameters_with_one_p_eta_values;
+    extern Parameters parameters_with_one_p_eta_values2;
 
     // Mock return values for functions in utilities
     extern const double gamma_t_i_l;

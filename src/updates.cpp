@@ -77,6 +77,7 @@ double compute_update_mu_F(int i, int j, double update_sigma_squared_F_i_j, cons
 
 double compute_update_eta_i_j_log_relative_pmf(int i, int j, int eta, double update_sigma_squared_F_i_j, double update_mu_F_i_j, const Parameters &parameters)
 {
+    // This function should not be called if parameters.is_p_eta_zero[i][j] || parameters.is_p_eta_one[i][j]
     double log_p_eta_i_j = parameters.log_p_eta[i][j];
     double p_eta_i_j = exp(log_p_eta_i_j);
 
@@ -94,6 +95,7 @@ double compute_update_eta_i_j_log_relative_pmf(int i, int j, int eta, double upd
 
 double compute_update_log_r_eta(int i, int j, double update_sigma_squared_F_i_j, double update_mu_F_i_j, const Parameters &parameters)
 {
+    // This function should not be called if parameters.is_p_eta_zero[i][j] || parameters.is_p_eta_one[i][j]
     double relative_true_log_prob = compute_update_eta_i_j_log_relative_pmf(i, j, 1, update_sigma_squared_F_i_j, update_mu_F_i_j, parameters);
     double relative_false_log_prob = compute_update_eta_i_j_log_relative_pmf(i, j, 0, update_sigma_squared_F_i_j, update_mu_F_i_j, parameters);
 
@@ -116,6 +118,17 @@ UpdateFEtaResult compute_update_F_eta(int i, int j, const Parameters &parameters
         update_sigma_squared_F_i_j,
         update_mu_F_i_j,
         update_log_r_eta_i_j};
+}
+
+UpdateFEtaExcludeEtaResult compute_update_F_eta_exclude_eta(int i, int j, const Parameters &parameters)
+{
+    double update_sigma_squared_F_i_j = compute_update_sigma_squared_F(i, j, parameters);
+    double update_mu_F_i_j = compute_update_mu_F(i, j, update_sigma_squared_F_i_j, parameters);
+
+    return {
+        update_sigma_squared_F_i_j,
+        update_mu_F_i_j,
+    };
 }
 
 // For tau_i_l related updates

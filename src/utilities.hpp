@@ -6,6 +6,8 @@
 #include <unsupported/Eigen/SpecialFunctions>
 
 double sum_log(double log_a, double log_b);
+double r_eta(int i, int j, const Parameters &parameters);
+double p_eta(int i, int j, const Parameters &parameters);
 double gamma_t(int i, int l, const Parameters &parameters);
 double gamma_tau(int i, int l, const Parameters &parameters);
 double xi_L(int i, int j, int k, int l, const Parameters &parameters);

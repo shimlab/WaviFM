@@ -24,6 +24,12 @@ struct UpdateFEtaResult
     double log_r_eta;
 };
 
+struct UpdateFEtaExcludeEtaResult
+{
+    double sigma_squared_F;
+    double mu_F;
+};
+
 struct UpdateTauResult
 {
     double alpha_hat_tau;
@@ -49,6 +55,7 @@ double compute_update_mu_F(int i, int j, double update_sigma_squared_F_i_j, cons
 double compute_update_eta_i_j_log_relative_pmf(int i, int j, int eta, double update_sigma_squared_F_i_j, double update_mu_F_i_j, const Parameters &parameters);
 double compute_update_log_r_eta(int i, int j, double update_sigma_squared_F_i_j, double update_mu_F_i_j, const Parameters &parameters);
 UpdateFEtaResult compute_update_F_eta(int i, int j, const Parameters &parameters);
+UpdateFEtaExcludeEtaResult compute_update_F_eta_exclude_eta(int i, int j, const Parameters &parameters);
 
 // For tau_i_l related updates
 double compute_update_alpha_hat_tau(int i, int l, const Parameters &parameters);
