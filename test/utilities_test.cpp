@@ -11,6 +11,20 @@ TEST(UtilitiesTest, SumLog)
     EXPECT_NEAR(sum_log(log_a, log_b), -4.50986, 0.001);
 }
 
+TEST(UtilitiesTest, REta)
+{
+    EXPECT_NEAR(r_eta(1, 2, mocks::parameters), 0.5, 0.001);
+    EXPECT_NEAR(r_eta(1, 2, mocks::parameters_with_zero_p_eta_values), 0.0, 0.001);
+    EXPECT_NEAR(r_eta(1, 2, mocks::parameters_with_one_p_eta_values), 1.0, 0.001);
+}
+
+TEST(UtilitiesTest, PEta)
+{
+    EXPECT_NEAR(p_eta(1, 2, mocks::parameters), 0.5, 0.001);
+    EXPECT_NEAR(p_eta(1, 2, mocks::parameters_with_zero_p_eta_values), 0.0, 0.001);
+    EXPECT_NEAR(p_eta(1, 2, mocks::parameters_with_one_p_eta_values), 1.0, 0.001);
+}
+
 TEST(UtilitiesTest, GammaT)
 {
     EXPECT_NEAR(gamma_t(1, 1, mocks::parameters), mocks::gamma_t_i_l, 0.001);
