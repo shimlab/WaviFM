@@ -121,26 +121,7 @@ namespace mocks
                           alpha_hat_tau,
                           beta_hat_tau);
     // Below is exactly same as parameters defined above. The reason to define it again is due to peculiar behaviour in linux where using the above parameter breaks some tests (likely due to some test interaction issues), despite not so in windows.
-    Parameters parameters2(n_resolutions, n_factors, n_features,
-                          Y,
-                          log_p_pi,
-                          log_p_eta,
-                          is_p_eta_zero,
-                          is_p_eta_one,
-                          alpha_t,
-                          beta_t,
-                          alpha_tau,
-                          beta_tau,
-                          mu_L,
-                          sigma_squared_L,
-                          log_r_pi,
-                          mu_F,
-                          sigma_squared_F,
-                          log_r_eta,
-                          alpha_hat_t,
-                          beta_hat_t,
-                          alpha_hat_tau,
-                          beta_hat_tau);
+    Parameters parameters2 = parameters;
 
     // Mock values for testing utilities
     const double gamma_t_i_l = 1;
