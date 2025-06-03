@@ -48,6 +48,34 @@ TEST(CaviUpdatesTest, ComputeUpdateEtaIJRelativePmf)
     EXPECT_NEAR(compute_update_eta_i_j_log_relative_pmf(1, 1, 1, mocks::update_sigma_squared_F_i_j, mocks::update_mu_F_i_j, mocks::parameters), mocks::update_eta_i_j_log_relative_pmf_1, 0.001);
 }
 
+TEST(CaviUpdatesTest, ComputeUpdateEtaIJRelativePmfErrorWhenEtaIsZeroOrOne)
+{
+    EXPECT_DEATH(
+        compute_update_eta_i_j_log_relative_pmf(1, 2, 0,
+            mocks::update_sigma_squared_F_i_j,
+            mocks::update_mu_F_i_j,
+            mocks::parameters_with_zero_p_eta_values),
+        ".*");
+    EXPECT_DEATH(
+        compute_update_eta_i_j_log_relative_pmf(1, 2, 1,
+            mocks::update_sigma_squared_F_i_j,
+            mocks::update_mu_F_i_j,
+            mocks::parameters_with_zero_p_eta_values),
+        ".*");
+    EXPECT_DEATH(
+        compute_update_eta_i_j_log_relative_pmf(1, 2, 0,
+            mocks::update_sigma_squared_F_i_j,
+            mocks::update_mu_F_i_j,
+            mocks::parameters_with_one_p_eta_values),
+        ".*");
+    EXPECT_DEATH(
+        compute_update_eta_i_j_log_relative_pmf(1, 2, 1,
+            mocks::update_sigma_squared_F_i_j,
+            mocks::update_mu_F_i_j,
+            mocks::parameters_with_one_p_eta_values),
+        ".*");
+}
+
 TEST(CaviUpdatesTest, ComputeUpdateREta)
 {
     EXPECT_NEAR(compute_update_log_r_eta(1, 1, mocks::update_sigma_squared_F_i_j, mocks::update_mu_F_i_j, mocks::parameters), mocks::update_log_r_eta_i_j, 0.001);
@@ -55,10 +83,21 @@ TEST(CaviUpdatesTest, ComputeUpdateREta)
 
 TEST(CaviUpdatesTest, ComputeUpdateFEta)
 {
-    auto update_F_eta = compute_update_F_eta(1, 1, mocks::parameters);
+    UpdateFEtaResult update_F_eta = compute_update_F_eta(1, 1, mocks::parameters);
     EXPECT_NEAR(update_F_eta.sigma_squared_F, mocks::update_sigma_squared_F_i_j, 0.001);
     EXPECT_NEAR(update_F_eta.mu_F, mocks::update_mu_F_i_j, 0.001);
     EXPECT_NEAR(update_F_eta.log_r_eta, mocks::update_log_r_eta_i_j, 0.001);
+}
+
+TEST(CaviUpdatesTest, ComputeUpdateFEtaExcludeEta)
+{
+    UpdateFEtaExcludeEtaResult update_F_eta_with_zero_p_eta_values = compute_update_F_eta_exclude_eta(1, 2, mocks::parameters_with_zero_p_eta_values);
+    EXPECT_NEAR(update_F_eta_with_zero_p_eta_values.sigma_squared_F, mocks::update_sigma_squared_F_i_j, 0.001);
+    EXPECT_NEAR(update_F_eta_with_zero_p_eta_values.mu_F, mocks::update_mu_F_i_j, 0.001);
+
+    UpdateFEtaExcludeEtaResult update_F_eta_with_one_p_eta_values = compute_update_F_eta_exclude_eta(1, 2, mocks::parameters_with_one_p_eta_values);
+    EXPECT_NEAR(update_F_eta_with_one_p_eta_values.sigma_squared_F, mocks::update_sigma_squared_F_i_j, 0.001);
+    EXPECT_NEAR(update_F_eta_with_one_p_eta_values.mu_F, mocks::update_mu_F_i_j, 0.001);
 }
 
 TEST(CaviUpdatesTest, ComputeUpdateAlphaHatTau)
