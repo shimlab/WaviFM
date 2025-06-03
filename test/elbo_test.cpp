@@ -26,6 +26,8 @@ TEST(CaviElboTest, ComputeELogLikelihoodPiijkl)
 TEST(CaviElboTest, ComputeELogLikelihoodEtaij)
 {
     EXPECT_NEAR(compute_E_log_likelihood_eta_i_j(1, 1, mocks::parameters), mocks::E_log_likelihood_eta_i_j, 0.001);
+    EXPECT_NEAR(compute_E_log_likelihood_eta_i_j(1, 2, mocks::parameters_with_zero_p_eta_values), 0.0, 0.001);
+    EXPECT_NEAR(compute_E_log_likelihood_eta_i_j(1, 2, mocks::parameters_with_one_p_eta_values), 0.0, 0.001);
 }
 
 TEST(CaviElboTest, ComputeELogLikelihoodTil)
@@ -46,6 +48,8 @@ TEST(CaviElboTest, ComputeENegativeVariationalLogLikelihoodLijklPiijkl)
 TEST(CaviElboTest, ComputeENegativeVariationalLogLikelihoodFijEtaij)
 {
     EXPECT_NEAR(compute_E_negative_variational_log_likelihood_F_i_j_eta_i_j(1, 1, mocks::parameters), mocks::E_negative_variational_log_likelihood_F_i_j_eta_i_j, 0.001);
+    EXPECT_NEAR(compute_E_negative_variational_log_likelihood_F_i_j_eta_i_j(1, 2, mocks::parameters_with_zero_p_eta_values), 0.0, 0.001);
+    EXPECT_NEAR(compute_E_negative_variational_log_likelihood_F_i_j_eta_i_j(1, 2, mocks::parameters_with_one_p_eta_values), 0.0, 0.001);
 }
 
 TEST(CaviElboTest, ComputeENegativeVariationalLogLikelihoodTil)
