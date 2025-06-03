@@ -1,4 +1,4 @@
-cmake_minimum_required(VERSION 3.30)
+cmake_minimum_required(VERSION 3.20)
 
 set(This WaviFM)
 
@@ -39,7 +39,7 @@ set(Sources
 
 # These PYTHON settings will need to be changed depending on one's setup
 set(PYBIND11_PYTHON_VERSION 3.7.12)
-set(PYTHON_EXECUTABLE "C:/Users/yw/miniconda3/envs/py3712/python.exe")
+set(PYTHON_EXECUTABLE "/home/yulin4/.conda/envs/py3712/bin/python")
 include_directories(lib/pybind11)
 add_subdirectory(lib/pybind11)
 pybind11_add_module(${This} SHARED ${Sources} ${Headers})
