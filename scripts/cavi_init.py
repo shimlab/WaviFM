@@ -38,6 +38,8 @@ def init_parameters(Y, dimensions, priors=None):
     # Set priors
     default_log_p_pi = np.log(np.full(p_pi_shape, 0.5).astype(np.float64))
     default_log_p_eta = np.log(np.full(F_shape, 0.5).astype(np.float64))
+    default_is_p_eta_zero = np.full(F_shape, False, dtype=bool)
+    default_is_p_eta_one = np.full(F_shape, False, dtype=bool)
     default_alpha_t = np.full(ab_t_shape, 1).astype(np.float64)
     default_beta_t = np.full(ab_t_shape, 1).astype(np.float64)
     default_alpha_tau = np.full(ab_tau_shape, 1).astype(np.float64)
@@ -54,6 +56,16 @@ def init_parameters(Y, dimensions, priors=None):
         else:
             log_p_eta = default_log_p_eta
         
+        if "is_p_eta_zero" in priors:
+            is_p_eta_zero = priors["is_p_eta_zero"]
+        else:
+            is_p_eta_zero = default_is_p_eta_zero
+
+        if "is_p_eta_one" in priors:
+            is_p_eta_one = priors["is_p_eta_one"]
+        else:
+            is_p_eta_one = default_is_p_eta_one
+
         if "alpha_t" in priors:
             alpha_t = priors["alpha_t"]
         else:
@@ -76,6 +88,8 @@ def init_parameters(Y, dimensions, priors=None):
     else:
         log_p_pi = default_log_p_pi
         log_p_eta = default_log_p_eta
+        is_p_eta_zero = default_is_p_eta_zero
+        is_p_eta_one = default_is_p_eta_one
         alpha_t = default_alpha_t
         beta_t = default_beta_t
         alpha_tau = default_alpha_tau
@@ -88,6 +102,8 @@ def init_parameters(Y, dimensions, priors=None):
         "Y": Y,  # This and below are model prior hyperparameters
         "log_p_pi": log_p_pi,
         "log_p_eta": log_p_eta,
+        "is_p_eta_zero": is_p_eta_zero,
+        "is_p_eta_one": is_p_eta_one,
         "alpha_t": alpha_t,
         "beta_t": beta_t,
         "alpha_tau": alpha_tau,
@@ -114,6 +130,8 @@ def build_parameters_cpp(parameters):
         parameters["Y"],
         parameters["log_p_pi"].tolist(),
         parameters["log_p_eta"].tolist(),
+        parameters["is_p_eta_zero"].tolist(),
+        parameters["is_p_eta_one"].tolist(),
         parameters["alpha_t"].tolist(),
         parameters["beta_t"].tolist(),
         parameters["alpha_tau"].tolist(),
