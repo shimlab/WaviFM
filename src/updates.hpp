@@ -8,6 +8,11 @@
 // Global constants
 extern const double RELATIVE_PMF_INCREMENT;
 extern const double LOG_RELATIVE_PMF_INCREMENT;
+extern const double EFFECTIVE_THRESHOLD;
+extern const double EFFECTIVE_ZERO;
+extern const double EFFECTIVE_ONE;
+extern const double EFFECTIVE_LOG_ZERO;
+extern const double EFFECTIVE_LOG_ONE;
 
 // Parameter update grouping structs
 struct UpdateLPIResult
