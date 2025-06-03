@@ -3,6 +3,11 @@
 // Global constants
 const double RELATIVE_PMF_INCREMENT = 1e-10;
 const double LOG_RELATIVE_PMF_INCREMENT = std::log(RELATIVE_PMF_INCREMENT);
+const double EFFECTIVE_THRESHOLD = 1e-8;
+const double EFFECTIVE_ZERO = EFFECTIVE_THRESHOLD;
+const double EFFECTIVE_ONE = 1.0 - EFFECTIVE_THRESHOLD;
+const double EFFECTIVE_LOG_ZERO = std::log(EFFECTIVE_ZERO);
+const double EFFECTIVE_LOG_ONE = std::log(EFFECTIVE_ONE);
 
 // For L_ijk_l, pi_ijk_l related updates
 double compute_update_sigma_squared_L(int i, int j, int k, int l, const Parameters &parameters)
@@ -110,7 +115,15 @@ UpdateFEtaResult compute_update_F_eta(int i, int j, const Parameters &parameters
 {
     double update_sigma_squared_F_i_j = compute_update_sigma_squared_F(i, j, parameters);
     double update_mu_F_i_j = compute_update_mu_F(i, j, update_sigma_squared_F_i_j, parameters);
-    double update_log_r_eta_i_j = compute_update_log_r_eta(i, j, update_sigma_squared_F_i_j, update_mu_F_i_j, parameters);
+    double log_p_eta_i_j = parameters.log_p_eta[i][j];
+    double update_log_r_eta_i_j;
+    if (log_p_eta_i_j < EFFECTIVE_LOG_ZERO) {
+      update_log_r_eta_i_j = EFFECTIVE_LOG_ZERO;
+    } else if (log_p_eta_i_j > EFFECTIVE_LOG_ONE) {
+      update_log_r_eta_i_j = EFFECTIVE_LOG_ONE;
+    } else {
+      update_log_r_eta_i_j = compute_update_log_r_eta(i, j, update_sigma_squared_F_i_j, update_mu_F_i_j, parameters);
+    }
 
     return {
         update_sigma_squared_F_i_j,
