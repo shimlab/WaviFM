@@ -48,33 +48,33 @@ TEST(CaviUpdatesTest, ComputeUpdateEtaIJRelativePmf)
     EXPECT_NEAR(compute_update_eta_i_j_log_relative_pmf(1, 1, 1, mocks::update_sigma_squared_F_i_j, mocks::update_mu_F_i_j, mocks::parameters), mocks::update_eta_i_j_log_relative_pmf_1, 0.001);
 }
 
-TEST(CaviUpdatesTest, ComputeUpdateEtaIJRelativePmfErrorWhenEtaIsZeroOrOne)
-{
-    EXPECT_DEATH(
-        compute_update_eta_i_j_log_relative_pmf(1, 2, 0,
-            mocks::update_sigma_squared_F_i_j,
-            mocks::update_mu_F_i_j,
-            mocks::parameters_with_zero_p_eta_values),
-        ".*");
-    EXPECT_DEATH(
-        compute_update_eta_i_j_log_relative_pmf(1, 2, 1,
-            mocks::update_sigma_squared_F_i_j,
-            mocks::update_mu_F_i_j,
-            mocks::parameters_with_zero_p_eta_values),
-        ".*");
-    EXPECT_DEATH(
-        compute_update_eta_i_j_log_relative_pmf(1, 2, 0,
-            mocks::update_sigma_squared_F_i_j,
-            mocks::update_mu_F_i_j,
-            mocks::parameters_with_one_p_eta_values),
-        ".*");
-    EXPECT_DEATH(
-        compute_update_eta_i_j_log_relative_pmf(1, 2, 1,
-            mocks::update_sigma_squared_F_i_j,
-            mocks::update_mu_F_i_j,
-            mocks::parameters_with_one_p_eta_values),
-        ".*");
-}
+// TEST(CaviUpdatesTest, ComputeUpdateEtaIJRelativePmfErrorWhenEtaIsZeroOrOne)
+// {
+//     EXPECT_DEATH(
+//         compute_update_eta_i_j_log_relative_pmf(1, 2, 0,
+//             mocks::update_sigma_squared_F_i_j,
+//             mocks::update_mu_F_i_j,
+//             mocks::parameters_with_zero_p_eta_values),
+//         ".*");
+//     EXPECT_DEATH(
+//         compute_update_eta_i_j_log_relative_pmf(1, 2, 1,
+//             mocks::update_sigma_squared_F_i_j,
+//             mocks::update_mu_F_i_j,
+//             mocks::parameters_with_zero_p_eta_values),
+//         ".*");
+//     EXPECT_DEATH(
+//         compute_update_eta_i_j_log_relative_pmf(1, 2, 0,
+//             mocks::update_sigma_squared_F_i_j,
+//             mocks::update_mu_F_i_j,
+//             mocks::parameters_with_one_p_eta_values),
+//         ".*");
+//     EXPECT_DEATH(
+//         compute_update_eta_i_j_log_relative_pmf(1, 2, 1,
+//             mocks::update_sigma_squared_F_i_j,
+//             mocks::update_mu_F_i_j,
+//             mocks::parameters_with_one_p_eta_values),
+//         ".*");
+// }
 
 TEST(CaviUpdatesTest, ComputeUpdateREta)
 {

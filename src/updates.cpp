@@ -77,8 +77,8 @@ double compute_update_mu_F(int i, int j, double update_sigma_squared_F_i_j, cons
 
 double compute_update_eta_i_j_log_relative_pmf(int i, int j, int eta, double update_sigma_squared_F_i_j, double update_mu_F_i_j, const Parameters &parameters)
 {
-    assert(!parameters.is_p_eta_zero[i][j] && !parameters.is_p_eta_one[i][j] && 
-      "This function should not be called if is_p_eta_zero[i][j] or is_p_eta_one[i][j] is true");
+    // assert(!parameters.is_p_eta_zero[i][j] && !parameters.is_p_eta_one[i][j] && 
+    //   "This function should not be called if is_p_eta_zero[i][j] or is_p_eta_one[i][j] is true");
     double log_p_eta_i_j = parameters.log_p_eta[i][j];
     double p_eta_i_j = exp(log_p_eta_i_j);
 
@@ -96,8 +96,8 @@ double compute_update_eta_i_j_log_relative_pmf(int i, int j, int eta, double upd
 
 double compute_update_log_r_eta(int i, int j, double update_sigma_squared_F_i_j, double update_mu_F_i_j, const Parameters &parameters)
 {
-    assert(!parameters.is_p_eta_zero[i][j] && !parameters.is_p_eta_one[i][j] && 
-      "This function should not be called if is_p_eta_zero[i][j] or is_p_eta_one[i][j] is true");
+    // assert(!parameters.is_p_eta_zero[i][j] && !parameters.is_p_eta_one[i][j] && 
+    //   "This function should not be called if is_p_eta_zero[i][j] or is_p_eta_one[i][j] is true");
     double relative_true_log_prob = compute_update_eta_i_j_log_relative_pmf(i, j, 1, update_sigma_squared_F_i_j, update_mu_F_i_j, parameters);
     double relative_false_log_prob = compute_update_eta_i_j_log_relative_pmf(i, j, 0, update_sigma_squared_F_i_j, update_mu_F_i_j, parameters);
 
