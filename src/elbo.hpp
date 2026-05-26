@@ -65,7 +65,7 @@ inline double compute_E_negative_variational_log_likelihood_L_ijk_l_pi_ijk_l(int
 {
     double r_pi_ijk_l = std::exp(parameters.log_r_pi[l][i][j][k]);
     double sigma_squared_L_ijk_l = parameters.sigma_squared_L[l][i][j][k];
-    return (r_pi_ijk_l / 2) * std::log(2 * M_PI * sigma_squared_L_ijk_l + 1) - r_pi_ijk_l * std::log(r_pi_ijk_l) -
+    return (r_pi_ijk_l / 2) * (std::log(2 * M_PI * sigma_squared_L_ijk_l) + 1) - r_pi_ijk_l * std::log(r_pi_ijk_l) -
            (1 - r_pi_ijk_l) * std::log(1 - r_pi_ijk_l);
 }
 
@@ -73,7 +73,7 @@ inline double compute_E_negative_variational_log_likelihood_F_i_j_eta_i_j(int i,
 {
     double r_eta_i_j = std::exp(parameters.log_r_eta[i][j]);
     double sigma_squared_F_i_j = parameters.sigma_squared_F[i][j];
-    return (r_eta_i_j / 2) * std::log(2 * M_PI * sigma_squared_F_i_j + 1) - r_eta_i_j * std::log(r_eta_i_j) -
+    return (r_eta_i_j / 2) * (std::log(2 * M_PI * sigma_squared_F_i_j) + 1) - r_eta_i_j * std::log(r_eta_i_j) -
            (1 - r_eta_i_j) * std::log(1 - r_eta_i_j);
 }
 
