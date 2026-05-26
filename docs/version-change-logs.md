@@ -27,3 +27,8 @@ Changes
 
 Changes
 - Updated prebuilt binary for code
+
+## v1.4.0
+
+Changes
+- Fixed bug in ELBO computation (misplaced parentheses)
