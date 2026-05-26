@@ -40,6 +40,7 @@ set(Sources
 # These PYTHON settings will need to be changed depending on one's setup
 set(PYBIND11_PYTHON_VERSION 3.7.12)
 set(PYTHON_EXECUTABLE "/home/yulin4/.conda/envs/py3712/bin/python")
+# set(PYTHON_EXECUTABLE "C:/Users/yw/miniconda3/envs/py3712/python.exe") # Another example that can be swapped with the above
 include_directories(lib/pybind11)
 add_subdirectory(lib/pybind11)
 pybind11_add_module(${This} SHARED ${Sources} ${Headers})
