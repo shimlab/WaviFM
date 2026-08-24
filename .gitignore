@@ -1,6 +1,11 @@
 # /data # Include data for reproducibility
 /.vscode
+*.code-workspace
+.obsidian/
+.ipynb_checkpoints/
+.Rproj.user/
 /.temp
+scratch/
 *.exe
 *.csv
 
