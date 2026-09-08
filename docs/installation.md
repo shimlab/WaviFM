@@ -9,7 +9,7 @@
 Before installing, make sure you have:
 - **Python** $\ge 3.7$
 - **CMake** $\ge 3.16$
-- **A C++17 compiler** (e.g. GCC/Clang on Linux/macOS, MSVC or MinGW on Windows)
+- **A C++17 compiler** (e.g. GCC or Clang)
 
 ---
 
@@ -30,8 +30,6 @@ source wavefactor-venv/bin/activate
 pip install .
 ```
 
-> **Windows note**: Activate the environment using `wavefactor-venv\Scripts\Activate.ps1` (PowerShell) or `wavefactor-venv\Scripts\activate.bat` (CMD).
-
 ---
 
 ## 3. Quick Check
@@ -39,7 +37,7 @@ pip install .
 Check that the installation succeeded:
 
 ```bash
-python -c "import wavefactor; print('WaveFactor installed successfully!')"
+python -c "import wavefactor; print('WaveFactor installed successfully')"
 ```
 
 To run all tests:

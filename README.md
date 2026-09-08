@@ -8,7 +8,7 @@
 
 ## 🚀 Installation
 
-WaveFactor requires Python $\ge 3.7$, CMake $\ge 3.16$, and a C++17 compiler (e.g. GCC/Clang on Linux/macOS, MSVC/MinGW on Windows).
+WaveFactor requires Python $\ge 3.7$, CMake $\ge 3.16$, and a C++17 compiler (e.g. GCC or Clang).
 
 To install WaveFactor in an isolated virtual environment:
 
@@ -24,8 +24,6 @@ source wavefactor-venv/bin/activate
 # 3. Install WaveFactor
 pip install .
 ```
-
-*(On Windows, activate using `wavefactor-venv\Scripts\Activate.ps1` in PowerShell or `wavefactor-venv\Scripts\activate.bat` in Command Prompt).*
 
 For further details, see the **[Installation Guide](docs/installation.md)**.
 
