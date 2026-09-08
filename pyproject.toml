@@ -37,13 +37,6 @@ dependencies = [
 testing = [
     "pytest>=7.0.0",
 ]
-anndata = [
-    "anndata>=0.8.0",
-]
-all = [
-    "pytest>=7.0.0",
-    "anndata>=0.8.0",
-]
 
 [tool.setuptools.packages.find]
 where = ["."]
