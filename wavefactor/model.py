@@ -178,9 +178,14 @@ class WaveFactor(BaseEstimator, TransformerMixin):
 
         return self
 
-    def transform(self) -> np.ndarray:
+    def transform(self, X: Optional[np.ndarray] = None) -> np.ndarray:
         """
         Returns the inferred spot-space spatial factor activities.
+
+        Parameters
+        ----------
+        X : Optional[np.ndarray], default=None
+            Ignored. Present for scikit-learn TransformerMixin API compatibility.
 
         Returns
         -------
@@ -195,6 +200,7 @@ class WaveFactor(BaseEstimator, TransformerMixin):
         self,
         X: np.ndarray,
         coords: np.ndarray,
+        **fit_params,
     ) -> np.ndarray:
         """
         Fits the model and returns the inferred spot-space spatial factors.
@@ -211,7 +217,7 @@ class WaveFactor(BaseEstimator, TransformerMixin):
         np.ndarray
             Spatial factors matrix S of shape (N_spots, K).
         """
-        return self.fit(X, coords).transform()
+        return self.fit(X, coords).transform(X)
 
     def get_result(self) -> WaveFactorResult:
         """Returns the rich WaveFactorResult object."""
