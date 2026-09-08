@@ -24,14 +24,14 @@ if os.path.exists(build_dir) and build_dir not in sys.path:
 
 
 def find_cpp_test_binary(base_dir):
-    """Locate the compiled WaviFMTests executable across build configurations."""
+    """Locate the compiled WaveFactorTests executable across build configurations."""
     candidates = [
-        os.path.join(base_dir, "build", "test", "WaviFMTests.exe"),
-        os.path.join(base_dir, "build", "test", "WaviFMTests"),
-        os.path.join(base_dir, "build", "test", "Release", "WaviFMTests.exe"),
-        os.path.join(base_dir, "build", "test", "Debug", "WaviFMTests.exe"),
-        os.path.join(base_dir, "build", "bin", "WaviFMTests.exe"),
-        os.path.join(base_dir, "build", "bin", "WaviFMTests"),
+        os.path.join(base_dir, "build", "test", "WaveFactorTests.exe"),
+        os.path.join(base_dir, "build", "test", "WaveFactorTests"),
+        os.path.join(base_dir, "build", "test", "Release", "WaveFactorTests.exe"),
+        os.path.join(base_dir, "build", "test", "Debug", "WaveFactorTests.exe"),
+        os.path.join(base_dir, "build", "bin", "WaveFactorTests.exe"),
+        os.path.join(base_dir, "build", "bin", "WaveFactorTests"),
     ]
     for path in candidates:
         if os.path.isfile(path):
@@ -54,10 +54,10 @@ def build_cpp_targets(base_dir, verbose=False):
             return False
 
     print("=" * 60)
-    print("        CMake Incremental Build (WaviFMTests & WaviFM)       ")
+    print("      CMake Incremental Build (WaveFactorTests & WaveFactor)    ")
     print("=" * 60)
     t0 = time.time()
-    for target in ["WaviFMTests", "WaviFM"]:
+    for target in ["WaveFactorTests", "WaveFactor"]:
         res = subprocess.run(
             ["cmake", "--build", "build", "--target", target],
             cwd=base_dir,
@@ -78,7 +78,7 @@ def build_cpp_targets(base_dir, verbose=False):
 def run_cpp_tests(base_dir, verbose=False):
     """Execute the C++ GoogleTest binary and parse the summary results."""
     print("=" * 60)
-    print("           C++ GoogleTest Suite (WaviFMTests)           ")
+    print("         C++ GoogleTest Suite (WaveFactorTests)         ")
     print("=" * 60)
 
     cpp_bin = find_cpp_test_binary(base_dir)
@@ -86,7 +86,7 @@ def run_cpp_tests(base_dir, verbose=False):
         print("[WARN] C++ test binary not found.")
         print("       To compile C++ tests, run:")
         print("         cmake -B build -S .")
-        print("         cmake --build build --target WaviFMTests\n")
+        print("         cmake --build build --target WaveFactorTests\n")
         return {"status": "skipped", "passed": 0, "failed": 0, "total": 0, "time": 0.0}
 
     rel_bin = os.path.relpath(cpp_bin, base_dir)

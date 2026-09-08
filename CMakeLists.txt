@@ -50,12 +50,12 @@ if(BUILD_PYTHON_MODULE)
     endif()
 
     if(TARGET pybind11::module OR TARGET pybind11::pybind11)
-        pybind11_add_module(WaviFM SHARED ${Sources} ${Headers})
-        target_link_libraries(WaviFM PRIVATE eigen)
-        target_include_directories(WaviFM PRIVATE ${CMAKE_CURRENT_SOURCE_DIR}/src)
+        pybind11_add_module(WaveFactor SHARED ${Sources} ${Headers})
+        target_link_libraries(WaveFactor PRIVATE eigen)
+        target_include_directories(WaveFactor PRIVATE ${CMAKE_CURRENT_SOURCE_DIR}/src)
 
         # Optimization flags (GCC)
-        target_compile_options(WaviFM PRIVATE -O3 -march=native -funroll-loops -ffast-math)
+        target_compile_options(WaveFactor PRIVATE -O3 -march=native -funroll-loops -ffast-math)
 
         # Create __init__.py in binary directory for testing direct imports from build
         set(INIT_PY "${CMAKE_CURRENT_BINARY_DIR}/__init__.py")

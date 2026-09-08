@@ -1,6 +1,6 @@
 cmake_minimum_required(VERSION 3.20)
 
-set(This WaviFMSrc)
+set(This WaveFactorSrc)
 
 set(Headers
     cavi.hpp

@@ -15,16 +15,16 @@ from multiprocessing import Pool
 _CPP_MODULE = None
 
 def _get_cpp_backend():
-    """Dynamically locates and loads the compiled C++ WaviFM Pybind11 module."""
+    """Dynamically locates and loads the compiled C++ WaveFactor Pybind11 module."""
     global _CPP_MODULE
     if _CPP_MODULE is not None:
         return _CPP_MODULE
 
     # Try standard import names
     import_candidates = [
-        "WaviFM",
+        "WaveFactor",
         "wavefactor._cpp",
-        "build.WaviFM",
+        "build.WaveFactor",
     ]
 
     for cand in import_candidates:
@@ -48,7 +48,7 @@ def _get_cpp_backend():
         if os.path.exists(cand_dir) and cand_dir not in sys.path:
             sys.path.insert(0, cand_dir)
             try:
-                import WaviFM as mod
+                import WaveFactor as mod
                 if hasattr(mod, "Parameters"):
                     _CPP_MODULE = mod
                     return _CPP_MODULE
@@ -214,7 +214,7 @@ def _run_single_cavi_worker(
     """Worker task for multiprocessing execution of a single CAVI run."""
     cpp = _get_cpp_backend()
     if cpp is None:
-        raise RuntimeError("C++ WaviFM module is required for CAVI execution.")
+        raise RuntimeError("C++ WaveFactor module is required for CAVI execution.")
 
     cpp_params = build_parameters_cpp(params_dict, cpp)
     t0 = time.time()
@@ -272,7 +272,7 @@ def run_cavi(
     cpp = _get_cpp_backend()
     if cpp is None:
         raise RuntimeError(
-            "WaveFactor C++ backend (WaviFM) not found. "
+            "WaveFactor C++ backend not found. "
             "Please ensure the C++ extension module is compiled."
         )
 

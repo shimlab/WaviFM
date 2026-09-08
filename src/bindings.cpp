@@ -2,7 +2,7 @@
 
 namespace py = pybind11;
 
-PYBIND11_MODULE(WaviFM, m)
+PYBIND11_MODULE(WaveFactor, m)
 {
     py::class_<CaviDimensions>(m, "CaviDimensions")
         .def(py::init<int, int, int, int>())

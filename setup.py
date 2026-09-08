@@ -74,6 +74,6 @@ class CMakeBuild(build_ext):
 
 
 setup(
-    ext_modules=[CMakeExtension("WaviFM")],
+    ext_modules=[CMakeExtension("WaveFactor")],
     cmdclass={"build_ext": CMakeBuild},
 )
