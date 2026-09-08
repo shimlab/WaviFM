@@ -42,9 +42,13 @@ def find_cpp_test_binary(base_dir):
 def build_cpp_targets(base_dir, verbose=False):
     """Ensure C++ test executable and Python extension are incrementally up-to-date."""
     build_dir = os.path.join(base_dir, "build")
-    if not os.path.exists(build_dir):
+    cmake_cache = os.path.join(build_dir, "CMakeCache.txt")
+    if not os.path.isfile(cmake_cache):
         print("Configuring CMake build directory...")
-        res = subprocess.run(["cmake", "-B", "build", "-S", "."], cwd=base_dir, capture_output=not verbose, text=True)
+        cmd = ["cmake", "-B", "build", "-S", "."]
+        if sys.platform == "win32":
+            cmd.extend(["-G", "MinGW Makefiles"])
+        res = subprocess.run(cmd, cwd=base_dir, capture_output=not verbose, text=True)
         if res.returncode != 0:
             print(f"[WARN] CMake configuration failed:\n{res.stderr if not verbose else ''}")
             return False
