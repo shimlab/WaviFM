@@ -1,4 +1,3 @@
-# Uncomment when doing testing
 cmake_minimum_required(VERSION 3.20)
 
 set(This WaviFMSrc)
@@ -25,9 +24,7 @@ set(Sources
 
 add_library(${This} STATIC ${Sources} ${Headers})
 
-target_link_libraries(${This} eigen)
+target_link_libraries(${This} PUBLIC eigen)
+target_include_directories(${This} PUBLIC ${CMAKE_CURRENT_SOURCE_DIR})
 
-set_target_properties(${This} PROPERTIES
-    COMPILE_FLAGS "-Ofast -march=native -flto -funroll-loops -fomit-frame-pointer -funsafe-math-optimizations -ffast-math -fno-math-errno -fno-trapping-math -ftree-vectorize -fprefetch-loop-arrays -falign-functions=32 -finline-functions -fipa-pta -fstrict-aliasing -fwhole-program"
-    LINK_FLAGS "-Wl,--gc-sections -Wl,-O2 -Wl,--as-needed"
-)
+target_compile_options(${This} PRIVATE -O3 -march=native -funroll-loops -ffast-math)
