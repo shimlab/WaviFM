@@ -74,6 +74,9 @@ class CMakeBuild(build_ext):
 
 
 setup(
+    name="wavefactor",
+    version="2.0.0",
+    packages=["wavefactor"],
     ext_modules=[CMakeExtension("WaveFactor")],
     cmdclass={"build_ext": CMakeBuild},
 )
