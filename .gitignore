@@ -6,6 +6,8 @@
 .Rproj.user/
 /.temp
 scratch/
+*venv*/
+.venv/
 *.exe
 *.csv
 !tests/fixtures/*.csv
