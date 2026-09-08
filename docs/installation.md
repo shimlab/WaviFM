@@ -18,9 +18,9 @@ Before installing, make sure you have:
 Using an isolated virtual environment prevents conflicts with other Python packages:
 
 ```bash
-# 1. Clone the repository
-git clone https://github.com/shimlab/WaviFM.git
-cd WaviFM
+# 1. Clone this repository (copy URL from the green "Code" button on GitHub)
+git clone <repository-url>
+cd <repository-folder>
 
 # 2. Create and activate a virtual environment
 python3 -m venv wavefactor-venv

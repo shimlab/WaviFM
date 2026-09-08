@@ -30,8 +30,9 @@ def _get_cpp_backend():
     for cand in import_candidates:
         try:
             mod = __import__(cand, fromlist=["cavi", "Parameters", "CaviDimensions", "CaviResult"])
-            _CPP_MODULE = mod
-            return _CPP_MODULE
+            if hasattr(mod, "Parameters"):
+                _CPP_MODULE = mod
+                return _CPP_MODULE
         except (ImportError, ModuleNotFoundError):
             pass
 
@@ -48,8 +49,9 @@ def _get_cpp_backend():
             sys.path.insert(0, cand_dir)
             try:
                 import WaviFM as mod
-                _CPP_MODULE = mod
-                return _CPP_MODULE
+                if hasattr(mod, "Parameters"):
+                    _CPP_MODULE = mod
+                    return _CPP_MODULE
             except (ImportError, ModuleNotFoundError):
                 pass
 

@@ -13,9 +13,9 @@ WaveFactor requires Python $\ge 3.7$, CMake $\ge 3.16$, and a C++17 compiler (e.
 To install WaveFactor in an isolated virtual environment:
 
 ```bash
-# 1. Clone repository and enter directory
-git clone https://github.com/shimlab/WaviFM.git
-cd WaviFM
+# 1. Clone this repository (copy URL from the green "Code" button on GitHub)
+git clone <repository-url>
+cd <repository-folder>
 
 # 2. Create and activate an isolated virtual environment
 python3 -m venv wavefactor-venv
