@@ -35,7 +35,7 @@ from .results import WaveFactorResult
 from .engine import run_cavi
 
 
-class WaveFactor(BaseEstimator, TransformerMixin):
+class WaveFactor(BaseEstimator):
     """
     WaveFactor: Bayesian Multiresolution Wavelet Spatial Factor Model.
 
