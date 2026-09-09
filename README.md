@@ -1,3 +1,9 @@
+
+# ⚠️ Legacy Repository Notice
+
+> **Note:** This project is archived and no longer actively developed.  
+> Active development has moved to [**shimlab/WaveFactor**](https://github.com/shimlab/WaveFactor). Please direct all new issues, pull requests, and usage to the new repository.
+
 # WaviFM: Wavelet-based variationally-inferred Factor Model
 
 Welcome!
